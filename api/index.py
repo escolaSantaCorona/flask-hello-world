@@ -143,7 +143,8 @@ def history():
         return jsonify(history_data), 200
     except Exception as e:
         print(f"An error occurred: {e}")
-        return jsonify({"error": "Não foi possível recuperar o histórico."}), 500
+        return jsonify({"error": f"Não foi possível recuperar o histórico. Detalhe do erro: {str(e)}"}), 500
+
 
 
 @app.route('/api/history/<word>', methods=['DELETE'])
