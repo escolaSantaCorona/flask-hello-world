@@ -13,7 +13,7 @@ class History:
 
     @classmethod
     def get_history_data(cls):
-        response = requests.get(cls.FIREBASE_URL)
+        response = req.get(cls.FIREBASE_URL)
         if response.ok:
             data = response.json()
             return data if isinstance(data, dict) else {}
@@ -30,7 +30,7 @@ class History:
 
     @classmethod
     def save_new_update(cls, data):
-        requests.put(cls.FIREBASE_URL, json.dumps(data))
+        req.put(cls.FIREBASE_URL, json.dumps(data))
 
     @classmethod
     def delete_item(cls, word):
