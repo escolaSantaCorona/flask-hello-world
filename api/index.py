@@ -9,11 +9,11 @@ import json
 
 # Início do conteúdo original do history.py
 class History:
-    FIREBASE_URL = "https://seu-projeto-firebase-default-rtdb.firebaseio.com/history.json"
+    FIREBASE_URL = "https://mauriciodallonder-64688-default-rtdb.firebaseio.com/history.json"
 
     @classmethod
     def get_history_data(cls):
-        response = req.get(cls.FIREBASE_URL)
+        response = requests.get(cls.FIREBASE_URL)
         if response.ok:
             data = response.json()
             return data if isinstance(data, dict) else {}
@@ -30,7 +30,7 @@ class History:
 
     @classmethod
     def save_new_update(cls, data):
-        req.put(cls.FIREBASE_URL, json.dumps(data))
+        requests.put(cls.FIREBASE_URL, json.dumps(data))
 
     @classmethod
     def delete_item(cls, word):
@@ -43,7 +43,7 @@ class History:
 
     @classmethod
     def delete_all(cls):
-        cls.save_new_update({})
+        cls.clear_all()
 # Fim do conteúdo original do history.py
 app = Flask(__name__)
 CORS(app)  # Habilite o CORS para todo o aplicativo
