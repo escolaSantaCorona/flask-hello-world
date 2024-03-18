@@ -5,7 +5,46 @@ from bs4 import BeautifulSoup
 from google.cloud import translate_v2 as translate
 from google.oauth2 import service_account
 import os
-from history import History
+import json
+
+# Início do conteúdo original do history.py
+class History:
+    FIREBASE_URL = "https://seu-projeto-firebase-default-rtdb.firebaseio.com/history.json"
+
+    @classmethod
+    def get_history_data(cls):
+        response = req.get(cls.FIREBASE_URL)
+        if response.ok:
+            data = response.json()
+            return data if isinstance(data, dict) else {}
+        return {}
+
+    @classmethod
+    def add_new_item(cls, word, translation):
+        data = cls.get_history_data()
+        if word not in data:
+            data[word] = translation
+            cls.save_new_update(data)
+            return True
+        return False
+
+    @classmethod
+    def save_new_update(cls, data):
+        req.put(cls.FIREBASE_URL, json.dumps(data))
+
+    @classmethod
+    def delete_item(cls, word):
+        data = cls.get_history_data()
+        if word in data:
+            del data[word]
+            cls.save_new_update(data)
+            return True
+        return False
+
+    @classmethod
+    def delete_all(cls):
+        cls.save_new_update({})
+# Fim do conteúdo original do history.py
 app = Flask(__name__)
 CORS(app)  # Habilite o CORS para todo o aplicativo
 
