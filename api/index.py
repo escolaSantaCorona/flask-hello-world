@@ -46,7 +46,7 @@ class History:
         cls.clear_all()
 # Fim do conteúdo original do history.py
 app = Flask(__name__)
-CORS(app)  # Habilite o CORS para todo o aplicativo
+CORS(app, resources={r"/api/*": {"origins": "https://dicionario-frances.vercel.app"}})
 
 USERAGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
 HEADERS = {"User-Agent": USERAGENT}
