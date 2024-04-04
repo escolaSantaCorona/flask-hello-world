@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests as req
 from bs4 import BeautifulSoup
-from google.cloud import translate_v2 as translate
-from google.oauth2 import service_account
 import os
 import json
 
@@ -54,7 +52,7 @@ NOT_RESULT = "<h1 style='color:#ff0422;text-align:center'>Aucun résultat trouv�
 # Assumindo que você tenha a estrutura do seu histórico e métodos relevantes,
 # você precisará ajustar isso conforme sua implementação de histórico.
 history_data = {}  # Este é um substituto simplificado para o objeto History.
-
+'''
 # Função para carregar credenciais da URL
 def load_credentials():
     credentials_url = 'https://storage.googleapis.com/api-tradutor/chave-api.json'
@@ -67,7 +65,7 @@ def load_credentials():
 # Use a função load_credentials() para obter as credenciais necessárias
 credentials = load_credentials()
 translate_client = translate.Client(credentials=credentials)
-
+'''
 
 def get_definition(word):
 
@@ -97,7 +95,7 @@ def get_definition(word):
         print(f"An error occurred: {e}")
         return "An error occurred while fetching the definition.", False
 
-
+'''
 @app.route('/api/translate', methods=['POST'])
 def translate_text():
 
@@ -116,7 +114,7 @@ def translate_text():
     except Exception as e:
         print(f"Erro ao traduzir texto: {e}")
         return jsonify({"error": "Erro ao traduzir texto."}), 500
-
+'''
 
 @app.route('/api/definitions', methods=['GET'])
 def definitions():
