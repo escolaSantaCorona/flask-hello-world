@@ -46,7 +46,6 @@ class History:
         cls.clear_all()
 # Fim do conteúdo original do history.py
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "https://dicionario-frances.vercel.app"}})
 
 USERAGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
 HEADERS = {"User-Agent": USERAGENT}
@@ -176,6 +175,13 @@ def home():
 @app.route('/about')
 def about():
     return 'About'
+    
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', 'https://dicionario-frances.vercel.app')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 if __name__ == '__main__':
