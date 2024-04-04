@@ -46,7 +46,7 @@ class History:
         cls.clear_all()
 # Fim do conteúdo original do history.py
 app = Flask(__name__)
-
+CORS(app)  # Habilite o CORS para todo o aplicativo
 USERAGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
 HEADERS = {"User-Agent": USERAGENT}
 NOT_RESULT = "<h1 style='color:#ff0422;text-align:center'>Aucun résultat trouvé</h1>"
@@ -176,12 +176,7 @@ def home():
 def about():
     return 'About'
     
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', 'https://dicionario-frances.vercel.app')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
+
 
 
 if __name__ == '__main__':
