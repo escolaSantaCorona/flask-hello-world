@@ -4,7 +4,7 @@ import requests as req
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 USERAGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
 HEADERS = {"User-Agent": USERAGENT}
@@ -97,7 +97,13 @@ def get_definition(word):
     except Exception as e:
         print(f"An error occurred: {e}")
         return "An error occurred while fetching the definition.", False
-
+        
+@app.after_request
+def add_cors_headers(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 @app.route('/api/definitions', methods=['GET'])
 def definitions():
