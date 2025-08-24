@@ -172,6 +172,43 @@ def clear_history():
 @app.route('/')
 def home():
     return 'Hello, World!'
+# /api/index.py
+
+# ... (mantenha todo o código existente do Flask e as importações)
+import json
+import os
+
+# --- INÍCIO DO NOVO CÓDIGO ---
+
+# Carrega o dicionário na memória do servidor UMA ÚNICA VEZ.
+# Isso é muito mais eficiente do que ler o arquivo a cada busca.
+word_list = []
+try:
+    # O caminho é relativo ao arquivo index.py dentro da pasta /api
+    dict_path = os.path.join(os.path.dirname(__file__), 'dic.json')
+    with open(dict_path, 'r', encoding='utf-8') as f:
+        # Carregamos apenas as chaves (palavras), que é tudo o que precisamos
+        word_list = list(json.load(f).keys())
+except Exception as e:
+    # Se houver um erro, registramos no log do servidor
+    print(f"ERRO CRÍTICO: Não foi possível carregar o dic.json. Erro: {e}")
+
+# Novo endpoint para a busca com autocomplete
+@app.route('/api/search')
+def search_words():
+    # Pega o termo de busca da URL (ex: /api/search?term=bon)
+    term = request.args.get('term', '').lower()
+
+    # Não busca se o termo for muito curto, para economizar recursos
+    if not term or len(term) < 2:
+        return jsonify([])
+
+    # Filtra a lista de palavras para encontrar aquelas que começam com o termo
+    # A busca é feita na lista que já está na memória, sendo extremamente rápida.
+    suggestions = [word for word in word_list if word.lower().startswith(term)]
+
+    # Retorna no máximo as 10 primeiras sugestões
+    return jsonify(suggestions[:10])
 
 @app.route('/about')
 def about():
